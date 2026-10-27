@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>CW Market Maker Monitor | VNDIRECT WebSocket v3</title>
+<style>
+:root{font-family:Inter,'Segoe UI',Arial,sans-serif;color:#e9eaf4;background:#0e111b;font-variant-numeric:tabular-nums}
+*{box-sizing:border-box} body{margin:0;background:#0e111b} button,input,textarea,select{font:inherit}button{cursor:pointer;transition:.15s ease;border:1px solid #414357;border-radius:9px;background:#252a3d;color:#f4f2ff;padding:9px 12px}button:hover{background:#383b56}button.primary{background:#7966e5;border-color:#7966e5;font-weight:700}button.primary:hover{background:#9685ee}button.danger{background:#5a2530;border-color:#80394a}input,textarea,select{background:#181d2b;border:1px solid #454759;border-radius:8px;color:#f4f1ff;padding:8px;min-width:0}input:focus,textarea:focus,select:focus{outline:2px solid #7564dc}input[type=checkbox]{accent-color:#9b89ff}label{font-size:12px;color:#bbc0d0}.app{max-width:1580px;margin:auto;padding:20px 18px 60px}.header{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap}.eyebrow{color:#baa8ff;text-transform:uppercase;letter-spacing:.13em;font-weight:750;font-size:11px}h1{margin:6px 0 9px;font-size:clamp(24px,3vw,36px);letter-spacing:-.03em}.desc{font-size:13px;color:#aeb3c5;line-height:1.6;max-width:900px}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chip{border:1px solid #43465b;border-radius:8px;padding:6px 10px;font-size:12px;color:#d6d4e2;background:#202537}.chip.good{color:#8cedbc;border-color:#235f45;background:#10281f}.chip.bad{color:#ffab9c;border-color:#713b37;background:#321a20}.chip.warn{color:#f3d18d;border-color:#6e5a34;background:#322816}.panel{background:#171c29;border:1px solid #31364a;border-radius:13px;padding:16px;margin-top:16px}.panel h2{font-size:16px;margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{border-radius:12px;background:#202637;padding:15px;min-height:96px;border:1px solid #30374e}.metric .num{font-size:34px;font-weight:800;line-height:1.2}.metric .lab{color:#aeb5cc;font-size:12px;margin-top:5px}.met-danger{color:#ff9da5}.met-warn{color:#ffc679}.met-good{color:#7fe1b2}.controls{display:flex;flex-wrap:wrap;align-items:end;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field select{min-width:170px}.field input{width:95px}.grow{flex:1}.grow input{width:100%}.group{display:flex;gap:8px;align-items:center}.subline{color:#a4adc5;font-size:12px;margin:10px 0 0;line-height:1.5}.notice{border-left:3px solid #8d78f0;background:#24243a;border-radius:7px;padding:11px 12px;font-size:12px;line-height:1.6;margin-top:12px;color:#d7d4ec}.notice.warn{border-left-color:#e9bd71;background:#332a23}.notice.bad{border-left-color:#ff8c88;background:#38232a}.tablewrap{overflow:auto;border:1px solid #32374b;border-radius:10px}.ctable{border-collapse:collapse;min-width:1060px;width:100%;font-size:12px;white-space:nowrap}.ctable th{background:#24293a;color:#b7bddd;text-align:right;font-weight:700;padding:13px 11px;border-bottom:1px solid #40445b;position:sticky;top:0}.ctable td{padding:11px;border-bottom:1px solid #2d3244;text-align:right}.ctable tbody tr:hover{background:#24283a}.ctable th:first-child,.ctable td:first-child{text-align:left}.sym{font-weight:800;letter-spacing:.01em;color:#d6c7ff}.muted{color:#858da4}.green{color:#7fefb6}.red{color:#ff9ea5}.amber{color:#ffd18a}.badge{font-weight:800;font-size:11px;border-radius:5px;padding:5px 7px;border:1px solid transparent}.badge.ok{color:#76e3aa;background:#173328;border-color:#285b45}.badge.warn{color:#ffd49b;background:#3b2d1b;border-color:#5b4830}.badge.bad{color:#ff9aa9;background:#401f2b;border-color:#743b46}.badge.na{color:#a9b2c7;background:#252c3e;border-color:#40465b}.elapsed{font-size:17px;font-weight:800}.elapsed.warn{color:#ffcc76}.elapsed.bad{color:#ff7587}.elapsed.good{color:#9caccb}.sm{font-size:11px;color:#8e97af}.inline{display:inline-flex;align-items:center;gap:6px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.ktext{font-size:12px;color:#adbbd0;line-height:1.8}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.demo-form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:9px;align-items:end}.demo-form .field input,.demo-form .field select{width:100%}.smallbtn{font-size:11px;padding:6px 8px}.logs{max-height:215px;overflow:auto}.logs .ctable{min-width:720px}.footer{color:#8d95ab;font-size:11px;margin-top:18px;line-height:1.8}.hide{display:none!important}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.demo-form{grid-template-columns:1fr 1fr}}@media(max-width:550px){.app{padding:13px 9px}.panel{padding:11px}.metric .num{font-size:28px}.demo-form{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div class="app">
+<div class="header"><div><div class="eyebrow">Pinetree | Chứng quyền có bảo đảm</div><h1>CW Market Maker Monitor</h1><div class="desc">Theo dõi Bid 1 / Ask 1, spread và khoảng thời gian phát sinh điều kiện yết giá. <b>Phiên bản v3 · Thử nghiệm VNDIRECT WebSocket · SSI dự phòng</b>. Không thay thế dữ liệu HOSE và nhật ký đặt lệnh Trader ID. Có độ trễ lấy mẫu và không ghi nhận mọi lần thay đổi sổ lệnh.</div></div><div class="chips"><span class="chip" id="session">Đang nhận diện phiên</span><span class="chip" id="clock">--:--:-- VN</span><span class="chip" id="connection">Chưa kết nối</span></div></div>
+<div class="notice warn"><b>Lưu ý nguồn dữ liệu:</b> Ưu tiên thử <b>VNDIRECT WebSocket</b> theo mã nguồn mẫu công khai. Địa chỉ WebSocket có thể đã thay đổi hoặc yêu cầu quyền truy cập: <b>kết nối được không đồng nghĩa đã có giá CW hợp lệ.</b> Giá từ bản tin BA dự kiến tính theo <b>nghìn VND</b>, được quy đổi ×1000, bắt buộc đối chiếu ít nhất 1 mã với bảng giá. Chưa xác nhận quyền sử dụng nguồn cho nghiệp vụ công ty; cần IT/nhà cung cấp chấp thuận. Không dùng để kết luận vi phạm HOSE.</div>
+<div class="grid" id="metrics" style="margin-top:16px"><div class="metric"><div class="num" id="m-all">10</div><div class="lab">Mã CW theo dõi</div></div><div class="metric"><div class="num met-danger" id="m-due">0</div><div class="lab">Đã quá 05:00 quan sát</div></div><div class="metric"><div class="num met-warn" id="m-warn">0</div><div class="lab">Đang phát sinh điều kiện</div></div><div class="metric"><div class="num met-good" id="m-fresh">0</div><div class="lab">Mã có snapshot hợp lệ</div></div></div>
+<div class="panel"><h2>Nguồn dữ liệu & bộ lọc</h2><div class="controls"><div class="field"><label>Chế độ</label><select id="source"><option value="vnd">VNDIRECT WebSocket (kiểm tra trực tiếp)</option><option value="proxy">SSI qua Netlify Function (đã báo 403)</option><option value="direct">SSI trực tiếp (kiểm tra CORS)</option><option value="demo">Kiểm thử thủ công — KHÔNG LIVE</option></select></div><div class="field"><label>Ngưỡng cảnh báo sớm (giây)</label><input id="early" type="number" value="240" min="1" max="299"></div><div class="field"><label>Ngưỡng quá hạn (giây)</label><input id="limit" type="number" value="300" min="2" max="3600"></div><div class="field grow"><label>Tìm mã</label><input id="filter" type="text" placeholder="Ví dụ CVPB"></div><button id="connect" class="primary">Kết nối dữ liệu</button><button id="sound">🔕 Bật âm báo</button></div><div class="controls" style="margin-top:12px"><div class="field grow"><label>Danh sách mã (cách nhau bằng dấu phẩy, cách, hoặc xuống dòng)</label><input id="watchlist" type="text" value="CPTP2637,CPTP2638,CHPG2643,CHPG2644,CMSN2632,CMSN2633,CVNM2625,CVNM2626,CVPB2631,CVPB2632"></div><button id="save">Lưu mã</button><button id="csv">Xuất sự kiện CSV</button><label class="inline" style="margin-left:auto"><input type="checkbox" id="pause" /> Tạm dừng giám sát (ngày nghỉ / lý do khác)</label></div><div class="subline" id="feedstatus">Chưa thử kết nối. Dữ liệu không tự xuất hiện nếu chưa truy cập được nguồn giá.</div><div class="notice" id="vndDiag"><b>Kiểm tra VNDIRECT:</b> Chưa bắt đầu. Chọn chế độ VNDIRECT và nhấn Kết nối dữ liệu.</div></div>
+<div class="panel"><div class="row" style="justify-content:space-between;margin-bottom:13px"><h2 style="margin:0">Bảng giám sát Bid / Ask</h2><span class="sm">Giá hiển thị VND · Spread &gt; 5% mới kích hoạt · Đếm từ lúc công cụ quan sát thấy</span></div><div class="tablewrap"><table class="ctable"><thead><tr><th>Mã CW</th><th>Bid 1</th><th>Ask 1</th><th>Chênh lệch (đ)</th><th>Spread (%)</th><th>Trạng thái bảng giá</th><th>Đếm thời gian</th><th>Mức cảnh báo</th><th>Nguồn / thời gian từ lúc lấy</th><th>Miễn trừ*</th></tr></thead><tbody id="tbody"></tbody></table></div><div class="subline">* Miễn trừ do người dùng xác nhận và chịu trách nhiệm về căn cứ pháp lý. Ảnh chụp API không xác nhận thời điểm từng lệnh tại HOSE. Bộ đếm chỉ bắt đầu khi công cụ ghi nhận điều kiện, có thể trễ so với thực tế. Khi gián đoạn dữ liệu sẽ ghi vào nhật ký và ngừng đếm để tránh kết luận sai. Tab bị đóng/ngủ không thể duy trì giám sát liên tục. Không kết luận tuân thủ từ bộ đếm này.</div></div>
+<div id="demoPanel" class="panel hide"><h2>Kiểm thử thủ công (chỉ DEMO)</h2><div class="demo-form"><div class="field"><label>Mã CW</label><select id="demoCode"></select></div><div class="field"><label>Bid 1 (VND; nhập 0 nếu không có)</label><input id="demoBid" type="number" min="0" step="10" value="1000"></div><div class="field"><label>Ask 1 (VND; nhập 0 nếu không có)</label><input id="demoAsk" type="number" min="0" step="10" value="1060"></div><button id="demoPush" class="primary">Gửi giá thử</button></div><div class="controls" style="margin-top:10px"><button class="smallbtn" data-sample="1000,1050">= 5% (không kích hoạt)</button><button class="smallbtn" data-sample="1000,1060">6% (kích hoạt)</button><button class="smallbtn" data-sample="0,1060">Không có Bid</button><button class="smallbtn" data-sample="0,0">Trống 2 chiều</button><button class="smallbtn" data-sample="1000,1040">Spread phục hồi</button></div><div class="notice">Bạn có thể chỉnh ngưỡng quá hạn từ 300 giây thành 10 giây để kiểm thử. <b>Tất cả giá DEMO là giá do bạn nhập, không phải giá thị trường.</b> Chế độ này không giới hạn giờ giao dịch nhằm thuận tiện test.</div></div>
+<div class="two"><div class="panel"><h2>Trạng thái kết nối</h2><div class="ktext" id="statusDetail">Chưa có kết nối nào được khởi tạo.</div><div class="notice">VNDIRECT: mã nguồn tham chiếu công khai tại <a style="color:#c6b6ff" href="https://github.com/VNDIRECT/price-feed" target="_blank" rel="noopener">VNDIRECT/price-feed</a>. Đây là endpoint mẫu chưa xác minh còn hoạt động năm 2026. Nếu WebSocket bị đóng/từ chối, không nên vượt kiểm soát nguồn. SSI vẫn có thể thử ở menu, nhưng hiện báo 403 từ máy chủ.</div></div><div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">Nhật ký giám sát</h2><button class="smallbtn" id="clear">Xóa nhật ký trên trình duyệt</button></div><div class="logs" style="margin-top:12px"><table class="ctable"><thead><tr><th>Thời gian (VN)</th><th>Mã CW</th><th>Sự kiện</th><th>Chi tiết</th></tr></thead><tbody id="logBody"></tbody></table></div><div class="subline">Nhật ký không lưu ở máy chủ. Chỉ lưu trên trình duyệt hiện tại (localStorage), không đồng bộ máy chủ. Mở lại trang hoặc đổi thiết bị có thể làm gián đoạn việc theo dõi.</div></div></div>
+<div class="footer">Căn cứ: Điều 3 và Điều 6 Quy chế kèm Quyết định 49/QĐ-HĐTV (19/06/2026). Spread = (Ask 1 − Bid 1)/Bid 1 × 100%. Ngoại lệ không thể suy luận đầy đủ chỉ từ bảng giá (giá lý thuyết, khối lượng trong tài khoản, thời hạn đáo hạn, giá cơ sở, ATO/ATC…). Việc bảng giá tự thu hẹp không chứng minh lệnh của tổ chức phát hành đã đạt nghĩa vụ yết giá: phải đối chiếu tài khoản, Trader ID, khối lượng ≥100 CW, thời gian lệnh ≥1 phút và các điều kiện miễn trừ. Để đánh giá tuân thủ pháp lý cần dữ liệu thị trường được cấp phép, thời gian chuẩn và log OMS.</div>
+</div>
+<script>
+'use strict';
+const DEFAULT=['CPTP2637','CPTP2638','CHPG2643','CHPG2644','CMSN2632','CMSN2633','CVNM2625','CVNM2626','CVPB2631','CVPB2632'];
+const IDS=id=>document.getElementById(id);const BASE='/.netlify/functions/ssi-quotes';const DIRECT='https://iboard-query.ssi.com.vn/stock/cw/hose';
+const todayVN=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const tsVN=t=>new Intl.DateTimeFormat('vi-VN',{timeZone:'Asia/Ho_Chi_Minh',hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(t));
+const timeVN=()=>new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit',weekday:'short'}).format(new Date());
+const load=(name,alt)=>{try{return JSON.parse(localStorage.getItem(name))??alt}catch(e){return alt}};
+let codes=load('cw_web_codes',DEFAULT), events=load('cw_web_logs',[]), exempt=load('cw_web_exempt',{});
+let mode='vnd', generation=0, ssiTimer=null, ssiStatus='Chưa thử',ssiAt=0;
+const VND_WS='wss://price-cmc-04.vndirect.com.vn/realtime/websocket';
+let vndSocket=null,vndRetry=null,vndTimeout=null,vndInfo={phase:'idle',frames:0,ba:0,matched:0,lastFrame:0,lastBA:0,openedAt:0,error:'',lastCode:'',lastRaw:''};
+let quotes={ssi:new Map(),vnd:new Map(),demo:new Map()},states={}, audio=null, soundEnabled=false, lastAlarm={};
+let early=240,limit=300, stale=30, paused=false;
+function persist(n,val){try{localStorage.setItem(n,JSON.stringify(val))}catch(e){}};
+function now(){return Date.now()};function parseFloatSafe(v){if(v===null||v===''||v==='—'||v==='-')return 0;if(v===undefined)return null;const n=Number(String(v).replace(/,/g,''));return Number.isFinite(n)?n:null};
+function priceVND(x){const n=parseFloatSafe(x);return n===null?null:Math.round(n*1000)};
+function escaped(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))};
+function showNum(n){return Number.isFinite(n)?Math.round(n).toLocaleString('vi-VN'):'—'};
+function clockFmt(n){n=Math.max(0,Math.floor(n));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')};
+function notify(code,type,extra=''){const item={ts:now(),code,type,extra};events.unshift(item);if(events.length>1200)events.length=1200;persist('cw_web_logs',events);drawEvents()};
+function getSession(){if(paused)return {name:'TẠM DỪNG THEO DÕI',active:false};if(mode==='demo')return {name:'DEMO · ngoài giờ vẫn đo thử',active:true};
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour12:false,weekday:'short',hour:'2-digit',minute:'2-digit'}).formatToParts(new Date());
+ const g=t=>parts.find(x=>x.type===t)?.value;const day=g('weekday'),hm=Number(g('hour'))*60+Number(g('minute'));
+ if(day==='Sat'||day==='Sun')return{name:'Cuối tuần / không giám sát',active:false};
+ if(hm>=560&&hm<690 || hm>=780&&hm<870) return{name:'Khớp lệnh liên tục',active:true}; // 09:20—11:30; 13:00—14:30
+ if(hm>=540&&hm<555)return{name:'ATO · miễn trừ',active:false};
+ if(hm>=555&&hm<560)return{name:'5 phút sau ATO · miễn trừ',active:false};
+ if(hm>=870&&hm<885)return{name:'ATC · miễn trừ',active:false};
+ if(hm>=690&&hm<780)return{name:'Nghỉ trưa',active:false};
+ return{name:'Ngoài giờ / cần kiểm tra lịch HOSE',active:false};
+}
+function isDateToday(d){const s=String(d||'').trim();if(!s)return false;const todays=todayVN(),parts=todays.split('-');const digits=s.replace(/[^\d]/g,'');return digits===parts.join('') || s.startsWith(todays) || s===`${parts[2]}/${parts[1]}/${parts[0]}`||s===`${parts[1]}/${parts[2]}/${parts[0]}`};
+function validSSIRow(r){if(!r||typeof r!=='object')return false;return !!String(r.stockSymbol||r.symbol||'').trim()};
+function ssiRows(js){let z=js?.data??js;let rows=z?.coveredWarrantData??z?.data??z;if(!Array.isArray(rows))throw new Error('Không tìm thấy coveredWarrantData[]');return rows.filter(validSSIRow)};
+function goodQ(q){return q&&Number.isFinite(q.bid)&&Number.isFinite(q.ask)&&q.bid>=0&&q.ask>=0&&q.at>0};
+function put(source,q){if(!q||!codes.includes(q.code)||!goodQ(q))return;quotes[source].set(q.code,q)}
+function quoteFor(code,nowms){
+ if(mode==='demo')return quotes.demo.get(code)||null;
+ if(mode==='vnd'){
+   // BA only emits on changes. Keep last observation while feed is connected
+   // AND at least one frame from subscribed symbols arrived recently.
+   if(!vndSocket||vndSocket.readyState!==WebSocket.OPEN)return null;
+   if(!vndInfo.lastBA||nowms-vndInfo.lastBA>120000)return null;
+   const q=quotes.vnd.get(code);
+   return q||null;
+ }
+ const q=quotes.ssi.get(code);
+ return q&&nowms-q.at<=stale*1000&&isDateToday(q.date)?q:null;
+}
+function kindOf(q){if(!q)return {kind:'',spread:null};const{bid,ask}=q;
+ if(bid>0&&ask>0){let spread=(ask-bid)*100/bid;return {kind:spread>5+1e-9?'SPREAD > 5%':'',spread}};
+ if(bid===0&&ask===0)return {kind:'KHÔNG CÓ 2 CHIỀU',spread:null};
+ if(bid===0)return{kind:'CHỈ CÓ BÊN BÁN',spread:null};return{kind:'CHỈ CÓ BÊN MUA',spread:null};
+}
+function closeIncident(code,msg,nowms){let st=states[code];if(st?.start){notify(code,msg,`${st.kind} · ${clockFmt((nowms-st.start)/1000)}`)}if(st){Object.assign(st,{start:null,kind:'',warned:false,over:false})}else{states[code]={start:null,kind:'',warned:false,over:false}}}
+function evaluate(){let t=now(),session=getSession(),rows=[],nDue=0,nTrigger=0,nFresh=0;
+ let filter=IDS('filter').value.trim().toUpperCase();for(let code of codes){const q=quoteFor(code,t),raw=kindOf(q),blocked=!!exempt[code];if(q)nFresh++;
+ if(!states[code])states[code]={start:null,kind:'',warned:false,over:false};const st=states[code];
+ if(!session.active||blocked||!q){if(st.start)closeIncident(code,blocked?'ĐÁNH DẤU MIỄN TRỪ':!session.active?'DỪNG PHIÊN / NGOÀI GIỜ':'GIÁN ĐOẠN DỮ LIỆU',t)}
+ else if(!raw.kind){if(st.start)closeIncident(code,'BẢNG GIÁ PHỤC HỒI',t)}
+ else {if(!st.start){st.start=t;st.kind=raw.kind;st.warned=false;st.over=false;notify(code,'PHÁT SINH ĐIỀU KIỆN',raw.kind)}else if(st.kind!==raw.kind){st.kind=raw.kind;notify(code,'CHUYỂN NGUYÊN NHÂN',raw.kind+' · giữ nguyên mốc đếm')}
+ const secs=(t-st.start)/1000; if(secs>=early&&!st.warned){st.warned=true;notify(code,'CẢNH BÁO SỚM',`${Math.floor(secs)} giây`);beep('early',code)}
+ if(secs>=limit&&!st.over){st.over=true;notify(code,'QUÁ NGƯỠNG THEO DÕI',`${Math.floor(secs)} giây · không tự kết luận vi phạm HOSE`);beep('late',code)}
+ }
+ let el=st.start?(t-st.start)/1000:0; if(st.start){nTrigger++;if(el>=limit)nDue++}
+ const stat=!q?'CHƯA ĐỦ DỮ LIỆU':blocked?'MIỄN TRỪ THỦ CÔNG':!session.active?'NGOÀI PHIÊN':!raw.kind?'SPREAD ≤ 5% / CÓ HAI CHIỀU':raw.kind;
+ const statusClass=!q||blocked||!session.active?'na':st.start&&el>=limit?'bad':st.start&&el>=early?'warn':st.start?'warn':'ok';
+ const alert=!q?'Mất / thiếu dữ liệu':blocked?'Không đếm':!session.active?'Không đếm':st.start&&el>=limit?'CẦN KIỂM TRA OMS':st.start&&el>=early?'Sắp 05:00':st.start?'Đang tính giờ':'Chưa phát sinh';
+ let attr=q?(escaped(q.source.toUpperCase())+` · ${Math.floor((t-q.at)/1000)}s`):'—';
+ if(!filter||code.includes(filter))rows.push(`<tr><td class="sym">${escaped(code)}</td><td>${q?showNum(q.bid):'—'}</td><td>${q?showNum(q.ask):'—'}</td><td>${q&&q.bid>0&&q.ask>0?showNum(q.ask-q.bid):'—'}</td><td class="${raw.spread!==null&&raw.spread>5?'red':''}">${raw.spread!==null?raw.spread.toFixed(2)+'%':'—'}</td><td><span class="badge ${statusClass}">${stat}</span></td><td><span class="elapsed ${st.start?(el>=limit?'bad':el>=early?'warn':'good'):'good'}">${st.start?clockFmt(el):'—'}</span></td><td class="${statusClass==='bad'?'red':statusClass==='warn'?'amber':''}">${alert}</td><td class="sm">${attr}</td><td><input type="checkbox" data-ex="${escaped(code)}" ${blocked?'checked':''} title="Đánh dấu miễn trừ thủ công" /></td></tr>`)
+ }
+ IDS('tbody').innerHTML=rows.join('')||'<tr><td colspan="10">Không có mã phù hợp</td></tr>';
+ IDS('m-all').textContent=codes.length;IDS('m-due').textContent=nDue;IDS('m-warn').textContent=nTrigger;IDS('m-fresh').textContent=nFresh;
+ IDS('session').textContent=session.name;IDS('session').className='chip '+(session.active?'good':'warn');IDS('clock').textContent=timeVN()+' (VN)';
+ IDS('connection').className='chip '+(mode==='demo'?'warn':nFresh?'good':'bad');IDS('connection').textContent=mode==='demo'?'CHẾ ĐỘ DEMO':nFresh?`Có snapshot: ${nFresh}/${codes.length}`:'CHƯA CÓ DỮ LIỆU HỢP LỆ';
+ const vnd=(mode==='vnd');
+ IDS('statusDetail').innerHTML=vnd
+   ? `Nguồn: <b>VNDIRECT WebSocket mẫu</b><br>Trạng thái: <b>${escaped(vndInfo.phase)}</b><br>WS mở lúc: ${vndInfo.openedAt?tsVN(vndInfo.openedAt):'—'}<br>Bản tin nhận: ${vndInfo.frames} · BA: ${vndInfo.ba} · BA đúng mã theo dõi: ${vndInfo.matched}<br>BA gần nhất: ${vndInfo.lastBA?tsVN(vndInfo.lastBA):'—'}<br>Chi tiết: ${escaped(vndInfo.error||'Không có lỗi kỹ thuật đã ghi nhận')}`
+   : `Nguồn: <b>${mode==='proxy'?'SSI qua Netlify Function':mode==='direct'?'SSI trực tiếp (CORS)':mode==='demo'?'DEMO':'—'}</b><br>Trạng thái: <b>${escaped(ssiStatus)}</b><br>Lần tải snapshot gần nhất: ${ssiAt?tsVN(ssiAt):'—'}<br>Chu kỳ gọi API SSI: 10 giây; không xác định toàn bộ thay đổi sổ lệnh.`;
+ IDS('feedstatus').textContent=vnd
+   ? `VNDIRECT: ${vndInfo.phase} | ${nFresh}/${codes.length} mã có giá | ${vndInfo.frames} bản tin, ${vndInfo.ba} BA, ${vndInfo.matched} BA khớp mã.`
+   :mode==='demo'?'Chế độ DEMO đang bật. Không có dữ liệu thực.':`SSI: ${ssiStatus} | ${nFresh}/${codes.length} mã có snapshot hợp lệ ngày hôm nay. Giá nguồn tính theo nghìn VND, giao diện quy đổi ×1000.`;
+ IDS('vndDiag').classList.toggle('hide',!vnd);
+ if(vnd){const d=vndInfo; const last=d.lastBA?`Tin BA gần nhất: ${tsVN(d.lastBA)}`:'Chưa có bản tin BA';
+  IDS('vndDiag').textContent=`Chẩn đoán VNDIRECT — ${d.phase}. Tổng bản tin: ${d.frames}, BA: ${d.ba}, khớp mã theo dõi: ${d.matched}. ${last}. ${d.error||''} ${d.lastRaw?'Bản tin giá thô gần nhất: '+d.lastRaw+'.':''} Không có BA nghĩa là chưa có căn cứ giám sát live.`;
+ }
+}
+function drawEvents(){const body=IDS('logBody');body.innerHTML=events.slice(0,150).map(v=>`<tr><td style="text-align:left">${escaped(tsVN(v.ts))}</td><td>${escaped(v.code)}</td><td style="text-align:left">${escaped(v.type)}</td><td style="text-align:left;white-space:normal">${escaped(v.extra)}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có sự kiện</td></tr>'}
+function beep(tp,code){if(!soundEnabled||!audio)return;let t=now();if(t-(lastAlarm[code]||0)<10000)return;lastAlarm[code]=t;try{let osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=tp==='late'?900:670;gain.gain.value=.09;osc.connect(gain);gain.connect(audio.destination);osc.start();osc.stop(audio.currentTime+(tp==='late'?.4:.18))}catch(e){}}
+function teardown(){generation++;if(ssiTimer)clearInterval(ssiTimer);ssiTimer=null;
+ if(vndRetry)clearTimeout(vndRetry);vndRetry=null;if(vndTimeout)clearTimeout(vndTimeout);vndTimeout=null;
+ if(vndSocket){const ws=vndSocket;vndSocket=null;ws.onclose=null;ws.onerror=null;ws.onopen=null;ws.onmessage=null;try{ws.close(1000,'switch mode')}catch(e){}}
+ fetching=false;}
+function switchMode(source){teardown();const t=now();for(const code of codes)if(states[code]?.start)closeIncident(code,'ĐỔI CHẾ ĐỘ / GIÁN ĐOẠN',t);
+ mode=source;quotes={ssi:new Map(),vnd:new Map(),demo:new Map()};ssiStatus='Chưa kết nối';ssiAt=0;IDS('demoPanel').classList.toggle('hide',mode!=='demo');
+ if(mode==='vnd'){
+    vndInfo={phase:'Đang mở WebSocket...',frames:0,ba:0,matched:0,lastFrame:0,lastBA:0,openedAt:0,error:'',lastCode:'',lastRaw:''};
+    connectVND(generation);
+ }else if(mode!=='demo'){const g=generation;fetchSSI(g);ssiTimer=setInterval(()=>fetchSSI(g),10000)}else ssiStatus='Không dùng';evaluate();}
+
+// Theo định dạng mẫu công khai VNDIRECT: {type:'BA',data:'time|code|bid1|...|offer1|...'}.
+function parseVNDBA(raw){
+ let obj;try{obj=JSON.parse(raw)}catch(e){return null}
+ if(obj?.type!=='BA')return null;
+ const data=obj?.data;
+ if(typeof data==='string'){
+  const a=data.split('|');if(a.length<10)return {invalid:'BA không đủ trường: '+a.length};
+  const code=String(a[1]||'').trim().toUpperCase();
+  const bid=priceVND(a[2]),ask=priceVND(a[8]);
+  if(!code||bid===null||ask===null||bid<0||ask<0)return {invalid:'BA thiếu mã hoặc Bid/Ask sai'};
+  return {code,bid,ask,marketTime:String(a[0]||''),rawBid:a[2],rawAsk:a[8]};
+ }
+ if(data&&typeof data==='object'){
+  const code=String(data.code||data.symbol||'').trim().toUpperCase();
+  const bid=priceVND(data.bidPrice01),ask=priceVND(data.offerPrice01);
+  if(!code||bid===null||ask===null||bid<0||ask<0)return {invalid:'BA object thiếu trường giá'};
+  return{code,bid,ask,marketTime:String(data.time||''),rawBid:data.bidPrice01,rawAsk:data.offerPrice01};
+ }
+ return {invalid:'BA có dạng data chưa hỗ trợ'};
+}
+function connectVND(g){
+ if(g!==generation||mode!=='vnd')return;
+ vndInfo.phase='Đang kết nối';vndInfo.error='';
+ let ws;try{ws=new WebSocket(VND_WS)}catch(e){vndInfo.phase='Không mở được WebSocket';vndInfo.error=String(e.message||e);evaluate();return}
+ vndSocket=ws;
+ vndTimeout=setTimeout(()=>{if(g!==generation||vndSocket!==ws)return;
+  if(ws.readyState===WebSocket.CONNECTING){vndInfo.phase='Không mở được WebSocket sau 15 giây';vndInfo.error='Hãy kiểm tra mạng/endpoint/quyền nguồn';try{ws.close()}catch(e){}}
+  else if(vndInfo.matched===0){vndInfo.phase='Đã mở WS nhưng chưa có dữ liệu CW';vndInfo.error='Chưa nhận được BA của 10 mã; có thể stream chỉ phát khi thay đổi hoặc nguồn không hỗ trợ CW';}
+  evaluate();},15000);
+ ws.onopen=()=>{if(g!==generation)return;
+  vndInfo.openedAt=now();vndInfo.phase='Đã mở WS, đang đăng ký BA';
+  const msg={type:'registConsumer',data:{sequence:0,params:{name:'BA',codes:codes.slice()}}};
+  try{ws.send(JSON.stringify(msg));vndInfo.phase='Đã gửi đăng ký BA; chờ dữ liệu CW';}
+  catch(e){vndInfo.phase='Không gửi được đăng ký';vndInfo.error=String(e.message||e)}
+  evaluate();};
+ ws.onmessage=ev=>{if(g!==generation)return;
+  vndInfo.frames++;vndInfo.lastFrame=now();
+  if(typeof ev.data!=='string'){vndInfo.error='Nhận bản tin nhị phân chưa hỗ trợ';evaluate();return}
+  let obj;try{obj=JSON.parse(ev.data)}catch(e){vndInfo.error='Bản tin không phải JSON';evaluate();return}
+  if(obj?.type==='BA'){
+   vndInfo.ba++;vndInfo.lastBA=now();
+   const q=parseVNDBA(ev.data);
+   if(q?.invalid){vndInfo.error='Lỗi định dạng: '+q.invalid;}
+   else if(q){vndInfo.lastCode=q.code;
+    if(codes.includes(q.code)){
+     vndInfo.matched++;vndInfo.lastRaw=`${q.code}: ${q.rawBid} / ${q.rawAsk}`;
+     put('vnd',{code:q.code,bid:q.bid,ask:q.ask,at:now(),source:'vnd-ws',marketTime:q.marketTime});
+     vndInfo.phase='Đang nhận BA CW · cần đối chiếu đơn vị giá với bảng thật';
+    }
+   }
+  }else if(vndInfo.frames===1){vndInfo.error='Bản tin đầu: '+String(obj?.type||'không rõ')+'; chưa chắc đã có BA';}
+  evaluate();};
+ ws.onerror=()=>{if(g===generation){vndInfo.error='Lỗi WebSocket (có thể bị mạng/Origin/nhà cung cấp từ chối)';vndInfo.phase='Lỗi kết nối';evaluate();}};
+ ws.onclose=e=>{if(g!==generation)return;
+  vndInfo.phase='WebSocket đã đóng';vndInfo.error=`Close ${e.code}${e.reason?' · '+e.reason:''}. Không thể tính tiếp thời gian giám sát khi mất feed.`;
+  vndSocket=null;evaluate();
+  // Chỉ khởi động lại hạn chế, không gửi dồn dập khi endpoint bị hạn chế.
+  if(e.code!==1008 && e.code!==4003 && e.code!==4403){vndRetry=setTimeout(()=>{if(g===generation&&mode==='vnd')connectVND(g)},30000)}
+ };
+}
+
+let fetching=false;
+async function fetchSSI(g){if(g!==generation||mode==='demo'||fetching)return;fetching=true;
+ try{const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),9000);let res;try{res=await fetch(mode==='direct'?DIRECT:BASE,{method:'GET',cache:'no-store',headers:{'Accept':'application/json'},signal:ctl.signal})}finally{clearTimeout(tm)};
+ const data=await res.json().catch(()=>null);if(g!==generation)return;
+ if(!res.ok)throw Error(data?.message||data?.error||`HTTP ${res.status} ${res.status===404?'– Netlify Function chưa deploy':''}`);
+ if(data?.ok===false)throw Error(data.message||data.error||'API báo lỗi');
+ const rows=ssiRows(data),dt=now();let n=0,invalid=0;
+ for(const r of rows){const code=String(r.stockSymbol||r.symbol||'').toUpperCase();if(!codes.includes(code))continue;
+ if(!isDateToday(r.tradingDate)){invalid++;continue}
+ if(!Object.prototype.hasOwnProperty.call(r,'best1Bid')||!Object.prototype.hasOwnProperty.call(r,'best1Offer')){invalid++;continue}
+ const bid=priceVND(r.best1Bid),ask=priceVND(r.best1Offer);
+ if(bid===null||ask===null){invalid++;continue}
+ const q={code,bid,ask,date:String(r.tradingDate),source:mode==='proxy'?'ssi-proxy':'ssi-direct',at:dt};put('ssi',q);n++}
+ ssiAt=dt;ssiStatus=n?`Nhận ${n} mã hợp lệ · ${rows.length} bản ghi từ SSI · ${tsVN(dt)}`:`API trả ${rows.length} bản ghi, nhưng không khớp mã/ngày hoặc thiếu Bid/Ask (${invalid} dòng)`;
+ }catch(e){ssiStatus='LỖI: '+String(e.message||e)}finally{fetching=false;if(g===generation)evaluate()}}
+function syncConfig(){let x=Math.floor(Number(IDS('limit').value)),y=Math.floor(Number(IDS('early').value));limit=Number.isFinite(x)&&x>=2?x:300;early=Number.isFinite(y)&&y>=1?Math.min(y,limit-1):240;if(early>=limit)early=Math.max(1,limit-1);IDS('early').value=early;IDS('limit').value=limit;evaluate()}
+function setCodes(){let arr=[...new Set(IDS('watchlist').value.toUpperCase().split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean))].filter(c=>/^[A-Z0-9_.-]{3,20}$/.test(c)).slice(0,200);if(!arr.length){alert('Cần nhập ít nhất một mã CW hợp lệ');return}codes=arr;IDS('watchlist').value=arr.join(',');persist('cw_web_codes',codes);for(let code of Object.keys(states))if(!codes.includes(code))delete states[code];fillDemoCodes();switchMode(mode)}
+function fillDemoCodes(){let select=IDS('demoCode'),prev=select.value;select.innerHTML=codes.map(c=>`<option value="${escaped(c)}">${escaped(c)}</option>`).join('');if(codes.includes(prev))select.value=prev}
+function demoPush(){if(mode!=='demo')return;const code=IDS('demoCode').value,bid=Number(IDS('demoBid').value),ask=Number(IDS('demoAsk').value);if(!code||![bid,ask].every(x=>Number.isFinite(x)&&x>=0)){alert('Bid và Ask phải ≥ 0');return}
+ put('demo',{code,bid,ask,source:'demo',at:now()});evaluate();}
+function csvDownload(){const hdr=['TimeVN','CW','Event','Detail'];const fmt=s=>'"'+String(s??'').replace(/"/g,'""')+'"';const lines=[hdr,...events.map(x=>[tsVN(x.ts),x.code,x.type,x.extra])].map(row=>row.map(fmt).join(','));const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`CW_MM_Web_${todayVN()}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+IDS('watchlist').value=codes.join(',');fillDemoCodes();drawEvents();
+IDS('source').addEventListener('change',e=>switchMode(e.target.value));IDS('connect').addEventListener('click',()=>switchMode(IDS('source').value));IDS('save').addEventListener('click',setCodes);
+IDS('filter').addEventListener('input',evaluate);IDS('early').addEventListener('change',syncConfig);IDS('limit').addEventListener('change',syncConfig);
+IDS('demoPush').addEventListener('click',demoPush);document.querySelectorAll('[data-sample]').forEach(b=>b.addEventListener('click',()=>{let [bid,ask]=b.dataset.sample.split(',').map(Number);IDS('demoBid').value=bid;IDS('demoAsk').value=ask;demoPush()}));
+IDS('tbody').addEventListener('change',e=>{let c=e.target?.dataset?.ex;if(!c)return;exempt[c]=e.target.checked;persist('cw_web_exempt',exempt);evaluate()});
+IDS('sound').addEventListener('click',async()=>{if(soundEnabled){soundEnabled=false;IDS('sound').textContent='🔕 Bật âm báo';return}try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();await audio.resume();soundEnabled=true;IDS('sound').textContent='🔔 Tắt âm báo';beep('early','test')}catch(e){alert('Trình duyệt không cho phép phát âm thanh: '+e.message)}});
+IDS('pause').addEventListener('change',e=>{paused=e.target.checked;evaluate()});IDS('csv').addEventListener('click',csvDownload);IDS('clear').addEventListener('click',()=>{if(confirm('Xóa toàn bộ nhật ký giám sát đã lưu trên trình duyệt này?')){events=[];persist('cw_web_logs',events);drawEvents()}});
+window.addEventListener('pagehide',()=>{for(let code of codes)if(states[code]?.start)closeIncident(code,'ĐÓNG/CHUYỂN TRANG',now())});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)evaluate()});
+// Chỉ lưu log; không lưu mốc đồng hồ để không tạo khoảng đếm không quan sát khi mở lại.
+IDS('source').value='vnd';switchMode('vnd');setInterval(evaluate,1000);
+</script></body></html>
